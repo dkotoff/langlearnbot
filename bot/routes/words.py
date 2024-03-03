@@ -4,6 +4,7 @@ from bot.database.package import get_all_packages, get_package_by_id, package_us
 from bot.database.word import get_random_word_from_package_with_no_user, add_word_to_user, get_random_userword_by_level
 from bot.database.users import get_user_by_vkid, delete_package_from_user, add_package_to_user
 from bot.states import States
+from typing import Union, Tuple
 import datetime
 import random
 from difflib import SequenceMatcher
@@ -69,8 +70,8 @@ async def handle_message_event(event: MessageEvent):
 
 @bl.private_message(payload_contains={"route": "start_teach"})
 async def start_teach_handler(message: Message, user: User):
-    word = get_word(user=user)   
-    await message.answer(f"Введите перевод слова <<{word.word.value}>>")
+    word, category = get_word(user=user)   
+    await message.answer(message_by_category(category, word))
     await bot.state_dispenser.set(message.peer_id, States.TeachMode, word = word) 
 
 
@@ -84,14 +85,15 @@ def random_category() -> int:
         return 2
     elif 8 < rnum <= 25:
         return 3
-    else:
+    elif 0 <= rnum <= 8:
         return 4
 
-def get_word(user: User) -> UserWord:
+def get_word(user: User) -> Tuple[UserWord, int]:
     category = random_category()
     package = get_user_random_packge(user)
 
     while True:
+        print(category)
         if category == 0:
             word = get_random_word_from_package_with_no_user(user=user, package=package)
             if not word:
@@ -110,8 +112,17 @@ def get_word(user: User) -> UserWord:
             word = get_random_word_from_package_with_no_user(user=user, package=package)
             word = add_word_to_user(word, user)
             session.commit()
+            category = 0
             break
-    return word
+    return word, category
+
+def message_by_category(category: int, word: UserWord) -> str:
+    if category == 0:
+        return f"Новое слово! {word.word.value.capitalize()} - {word.word.translate.capitalize()}. Напишите перевод для подтверждения."
+    elif category <= 3:
+        return f"Повторение. Напишите перевод слова {word.word.value.capitalize()}."
+    elif category >= 4:
+        return f"Закрепление. Напишите перевод слова {word.word.value.capitalize()}"
 
 
 @bl.private_message(state=States.TeachMode)
@@ -130,9 +141,10 @@ async def teach_handler(message: Message, user: User):
         word.last_repetition_time = datetime.datetime.now()
         session.commit()
 
-    next_word = get_word(user)
-    await message.answer(f"Введите перевод слова <<{next_word.word.value}>>")
-    await bot.state_dispenser.set(message.peer_id, States.TeachMode, word = word) 
+    next_word, category = get_word(user)
+    await message.answer(message_by_category(category, next_word))
+    await bot.state_dispenser.delete(message.peer_id)
+    await bot.state_dispenser.set(message.peer_id, States.TeachMode, word = next_word) 
 
 
 
