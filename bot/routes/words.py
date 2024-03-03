@@ -3,6 +3,7 @@ from vkbottle import Keyboard, KeyboardButtonColor, Text,  Callback, GroupEventT
 from bot.database.package import get_all_packages, get_package_by_id, package_user_active, get_user_random_packge
 from bot.database.word import get_random_word_from_package_with_no_user, add_word_to_user, get_random_userword_by_level
 from bot.database.users import get_user_by_vkid, delete_package_from_user, add_package_to_user
+from bot.words_selection import *
 from bot.states import States
 from typing import Union, Tuple
 import datetime
@@ -70,51 +71,11 @@ async def handle_message_event(event: MessageEvent):
 
 @bl.private_message(payload_contains={"route": "start_teach"})
 async def start_teach_handler(message: Message, user: User):
-    word, category = get_word(user=user)   
+    word, category = get_word(user)
     await message.answer(message_by_category(category, word))
     await bot.state_dispenser.set(message.peer_id, States.TeachMode, word = word) 
 
-
-def random_category() -> int:
-    rnum = random.randint(0, 100)
-    if 80 < rnum <= 100:
-        return 0
-    elif 50 < rnum <= 80:
-        return 1
-    elif 25 < rnum <= 50:
-        return 2
-    elif 8 < rnum <= 25:
-        return 3
-    elif 0 <= rnum <= 8:
-        return 4
-
-def get_word(user: User) -> Tuple[UserWord, int]:
-    category = random_category()
-    package = get_user_random_packge(user)
-
-    while True:
-        print(category)
-        if category == 0:
-            word = get_random_word_from_package_with_no_user(user=user, package=package)
-            if not word:
-                category+=1
-                continue
-            word = add_word_to_user(word, user)
-            session.commit()
-            break
-        elif 1 <= category <= 4:
-            word = get_random_userword_by_level(user=user, level=category)
-            if not word:
-                category+=1
-                continue
-            break
-        else:
-            word = get_random_word_from_package_with_no_user(user=user, package=package)
-            word = add_word_to_user(word, user)
-            session.commit()
-            category = 0
-            break
-    return word, category
+        
 
 def message_by_category(category: int, word: UserWord) -> str:
     if category == 0:
@@ -127,6 +88,8 @@ def message_by_category(category: int, word: UserWord) -> str:
 
 @bl.private_message(state=States.TeachMode)
 async def teach_handler(message: Message, user: User):
+
+    
     answer = message.text.lower().replace(" ", "").replace("\n", "")
     word: UserWord = message.state_peer.payload["word"]
 

@@ -27,3 +27,8 @@ def delete_package_from_user(package_id: int, user: User) -> Package | None:
     user.packages.remove(package)
     session.flush()
     return package
+
+def user_complete_day_goal(user: User) -> bool:
+    if user.day_deep_repetition < user.day_goal * 2 or user.day_fast_repetition < user.day_goal * 2 or user.day_new < user.day_goal:
+        return False
+    return True
