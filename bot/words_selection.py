@@ -9,9 +9,9 @@ from bot.common import session
 
 def random_category() -> int:
     rnum = random.randint(0, 100)
-    if 80 < rnum <= 100:
+    if 85 < rnum <= 100:
         return 0
-    elif 50 < rnum <= 80:
+    elif 50 < rnum <= 85:
         return 1
     elif 25 < rnum <= 50:
         return 2

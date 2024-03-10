@@ -18,3 +18,6 @@ def get_user_random_packge(user: User):
     rnum = random.randint(0, count-1)
 
     return user.packages[rnum]
+
+def get_user_packages(user: User) -> List[Package]:
+    return user.packages
