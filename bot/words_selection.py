@@ -14,7 +14,7 @@ def get_random_word(user: User) -> Tuple[UserWord, int]:
             word = get_random_userword_by_level(user=user, level=category)
             if not word:
                 category+=1
-                if category < 10:
+                if category > 10:
                     break    
                 continue
                 
@@ -40,6 +40,7 @@ def get_daily_word(user: User) -> Tuple[UserWord, int]:
             word = get_random_userword_by_level(user, category)
             if word:
                 return word, category
+            category += 1
 
     elif user.day_deep_repetition < g*2:
         category = 3

@@ -1,4 +1,4 @@
-from bot.model import Word, Package
+from bot.model import Word
 from bot.common import session
 
 file1 = open("test100.txt", "r")

@@ -12,6 +12,7 @@ class Word(Base):
     value: Mapped[str] = mapped_column(String[50])
     translate: Mapped[str] = mapped_column(String[50])
     package_id: Mapped[int] = mapped_column(ForeignKey("packages.id"))
+    additional_info: Mapped[Optional[str]]
 
     user_words: Mapped[Optional[List["UserWord"]]] = relationship("UserWord", back_populates="word")
 
