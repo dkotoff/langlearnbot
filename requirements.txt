@@ -1,3 +1,5 @@
 vkbottle
 python-dotenv
 sqlalchemy
+humanize
+loguru

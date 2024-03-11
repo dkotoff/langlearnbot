@@ -18,7 +18,7 @@ def get_random_word_from_package_with_no_user(package: Package, user: User) -> W
     return word
 
 def get_random_userword_by_level(user: User, level: int) -> UserWord | None:
-    count = session.query(UserWord).filter(UserWord.user_id == user.id).count()
+    count = session.query(UserWord).filter(and_(UserWord.user_id == user.id, UserWord.level == level)).count()
 
     rnum = random.randint(0, count)
 

@@ -25,6 +25,5 @@ class UserWord(Base):
     last_repetition_time: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.now())
     word_id: Mapped[int] = mapped_column(ForeignKey("words.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-
-    user: Mapped["User"] = relationship("User", back_populates="words")
+    user: Mapped["User"] = relationship("User", back_populates="words") # noqa: F821
     word: Mapped["Word"] = relationship("Word", back_populates="user_words")

@@ -1,0 +1,1 @@
+from .labeler import bl as routes_labeler

@@ -14,5 +14,5 @@ class User(Base):
     day_new: Mapped[int] = mapped_column(default=0)
     day_fast_repetition: Mapped[int] = mapped_column(default=0)
     day_deep_repetition: Mapped[int] = mapped_column(default=0)
-    packages: Mapped[List["Package"]] = relationship("Package", secondary=UserPackage, back_populates="users")   
-    words: Mapped[List["UserWord"]] = relationship("UserWord", back_populates="user")  
+    packages: Mapped[List["Package"]] = relationship("Package", secondary=UserPackage, back_populates="users")  # noqa: F821
+    words: Mapped[List["UserWord"]] = relationship("UserWord", back_populates="user")    # noqa: F821

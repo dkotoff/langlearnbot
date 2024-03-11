@@ -1,6 +1,5 @@
-from bot.common import bot, settings
-from bot.routes.words import bl as words_bl
-
-bot.labeler.load(words_bl)
+from bot.common import bot
+from bot.routes import routes_labeler
+bot.labeler.load(routes_labeler)
 
 bot.run_forever()

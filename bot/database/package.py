@@ -1,7 +1,6 @@
 import random
 from bot.model import Package, User, UserPackage
 from typing import List
-from sqlalchemy import text
 from bot.common import session
 
 def get_all_packages() -> List[Package] | None:
