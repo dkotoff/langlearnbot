@@ -14,11 +14,16 @@ def get_random_word(user: User) -> Tuple[UserWord, int]:
             word = get_random_userword_by_level(user=user, level=category)
             if not word:
                 category+=1
-                if category > 10:
+                if category > 6:
                     break    
                 continue
-                
+
             break
+    if not word:
+        package = get_user_random_packge(user)
+        word = get_random_word_from_package_with_no_user(package=package, user=user)    
+        word =add_word_to_user(word, user=user)
+        category = 0
     return word, category
 
 def get_daily_word(user: User) -> Tuple[UserWord, int]:

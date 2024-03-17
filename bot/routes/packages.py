@@ -22,7 +22,7 @@ async def packages_choose(message: Message, user: User):
 
         await message.answer(f"Название: {package.name}, Язык: {package.language}", keyboard=Keyboard(inline=True).add(Callback(msg, {"route": "choose_package", "pid": package.id}), color))
         
-    await message.answer("Выберите нужные языковые пакеты", keyboard=Keyboard().add(Text("Вернуться в меню", {"route": "menu"})))
+    await message.answer("Выберите нужные языковые пакеты", keyboard=Keyboard().add(Text("Вернуться в меню", {"route": "to_menu"})))
 
 
 @bl.raw_event(GroupEventType.MESSAGE_EVENT, dataclass=MessageEvent, payload_contains={"route": "choose_package"})

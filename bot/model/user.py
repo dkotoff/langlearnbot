@@ -10,7 +10,8 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, unique=True, primary_key=True)
     vkid: Mapped[int] = mapped_column(Integer, unique=True)
     name: Mapped[Optional[str]]
-    day_goal: Mapped[int] = mapped_column(Integer, default=5)
+    notification: Mapped[Optional[str]] = mapped_column(default="выкл.")
+    day_goal: Mapped[int] = mapped_column(Integer, default=0)
     day_new: Mapped[int] = mapped_column(default=0)
     day_fast_repetition: Mapped[int] = mapped_column(default=0)
     day_deep_repetition: Mapped[int] = mapped_column(default=0)

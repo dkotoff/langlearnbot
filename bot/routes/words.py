@@ -28,8 +28,8 @@ def message_by_category(category: int, word: UserWord) -> str:
         return f'🔷 Новое слово! "{word.word.value.capitalize()}" - "{word.word.translate.capitalize()}". Напишите перевод для продолжения '
     elif category in [1, 2]:
         return f'🔶 Повторение. Напишите перевод слова "{word.word.value.capitalize()}".'
-    elif category <= 3:
-        return f'♾ Закрепление. Напишите перевод слова "{word.word.value.capitalize()}:"'
+    elif category >= 3:
+        return f'♾ Закрепление. Напишите перевод слова "{word.word.value.capitalize()}"'
 
 
 @bl.private_message(state=States.TeachMode)

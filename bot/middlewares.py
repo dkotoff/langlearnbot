@@ -1,4 +1,3 @@
-from typing import Any, Coroutine
 from vkbottle.bot import Message
 from bot.database.users import user_exist, get_user_by_vkid, add_user
 from bot.common import bot, session
