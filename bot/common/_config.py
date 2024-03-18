@@ -12,5 +12,5 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
-
+#обьект хранящий конфигурацию для бота
 settings = Settings()
