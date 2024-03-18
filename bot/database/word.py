@@ -3,6 +3,7 @@ import random
 from bot.model import User, Word, Package, UserWord 
 from sqlalchemy import and_
 
+# возвращает случайное слово из пакета из тех которые пользователь ещё не изучил
 def get_random_word_from_package_with_no_user(package: Package, user: User) -> Word | None:
     count = (session.query(Word)
     .join(UserWord, and_(Word.id == UserWord.word_id, UserWord.user_id == user.id), isouter=True)
@@ -16,7 +17,7 @@ def get_random_word_from_package_with_no_user(package: Package, user: User) -> W
     .offset(rnum).limit(1).first())
     
     return word
-
+# возвращает случайное слово из изученных пользователем по категории
 def get_random_userword_by_level(user: User, level: int) -> UserWord | None:
     count = session.query(UserWord).filter(and_(UserWord.user_id == user.id, UserWord.level == level)).count()
 
@@ -26,7 +27,7 @@ def get_random_userword_by_level(user: User, level: int) -> UserWord | None:
             .filter(and_(UserWord.user_id == user.id, UserWord.level == level))
             .offset(rnum).limit(1).first())
 
-
+# добавляет слово в изученные пользователем
 def add_word_to_user(word: Word, user: User) -> UserWord:
     user_word = UserWord(word_id = word.id, user_id = user.id)
     session.add(user_word)   
